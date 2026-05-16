@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>VaiJunto • Passageiro</title>
+
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    body {
+      background: #0b0b0d;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 15px;
+      color: white;
+    }
+
+    .phone {
+      width: 100%;
+      max-width: 330px;
+      height: 680px;
+      background: #111;
+      border-radius: 35px;
+      border: 2px solid #252525;
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 0 40px rgba(16, 185, 129, 0.15);
+    }
+
+    /* ======================
+       HEADER
+    ====================== */
+
+    .top {
+      padding: 20px;
+      background: linear-gradient(135deg, #10B981, #0ea371);
+      position: relative;
+    }
+
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .avatar,
+    .notification {
+      width: 40px;
+      height: 40px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.15);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      backdrop-filter: blur(10px);
+    }
+
+    .top h1 {
+      font-size: 26px;
+      margin-top: 20px;
+    }
+
+    .top p {
+      margin-top: 8px;
+      opacity: .95;
+      line-height: 1.5;
+      font-size: 14px;
+    }
+
+    /* ======================
+       MAP
+    ====================== */
+
+    .map {
+      height: 170px;
+      position: relative;
+      overflow: hidden;
+
+      background:
+        linear-gradient(90deg, transparent 49%, #222 50%, transparent 51%),
+        linear-gradient(transparent 49%, #222 50%, transparent 51%);
+
+      background-size: 40px 40px;
+    }
+
+    .route {
+      width: 140px;
+      height: 140px;
+      border: 3px dashed #10B981;
+      border-radius: 50%;
+      position: absolute;
+      top: 15px;
+      left: 95px;
+      animation: rotate 10s linear infinite;
+    }
+
+    .car {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: #10B981;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: absolute;
+      top: 60px;
+      left: 140px;
+      font-size: 22px;
+      box-shadow: 0 0 20px rgba(16, 185, 129, 0.5);
+    }
+
+    .pin {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: white;
+      position: absolute;
+    }
+
+    .pin1 {
+      top: 35px;
+      left: 80px;
+    }
+
+    .pin2 {
+      bottom: 30px;
+      right: 70px;
+    }
+
+    @keyframes rotate {
+      from {
+        transform: rotate(0deg);
+      }
+
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* ======================
+       CONTENT
+    ====================== */
+
+    .content {
+      padding: 18px;
+      height: calc(100% - 320px);
+      overflow-y: auto;
+    }
+
+    .content::-webkit-scrollbar {
+      width: 0;
+    }
+
+    .search-box {
+      background: #181818;
+      border: 1px solid #242424;
+      border-radius: 22px;
+      padding: 22px 18px 18px;
+      margin-top: -4px;
+      position: relative;
+      z-index: 10;
+    }
+
+    .input-group {
+      margin-bottom: 14px;
+    }
+
+    .input-group label {
+      display: block;
+      margin-bottom: 7px;
+      color: #9ca3af;
+      font-size: 13px;
+    }
+
+    .input {
+      width: 100%;
+      background: #0f0f0f;
+      border: 1px solid #1f1f1f;
+      padding: 14px;
+      border-radius: 12px;
+      color: white;
+      font-size: 14px;
+      outline: none;
+    }
+
+    .input:focus {
+      border-color: #10B981;
+    }
+
+    /* ======================
+       FILTERS
+    ====================== */
+
+    .filters {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+
+    .filter {
+      padding: 10px 14px;
+      border-radius: 12px;
+      background: #111;
+      border: 1px solid #242424;
+      color: #d1d5db;
+      font-size: 12px;
+      transition: .3s;
+      cursor: pointer;
+    }
+
+    .filter.active {
+      background: rgba(16, 185, 129, 0.15);
+      border-color: #10B981;
+      color: #10B981;
+    }
+
+    /* ======================
+       BUTTON
+    ====================== */
+
+    .btn {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 14px;
+      background: #10B981;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 15px;
+      transition: .3s;
+    }
+
+    .btn:hover {
+      background: #0ea371;
+    }
+
+    /* ======================
+       RIDES
+    ====================== */
+
+    .rides {
+      margin-top: 24px;
+    }
+
+    .rides-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .rides-title h2 {
+      font-size: 18px;
+    }
+
+    .rides-title span {
+      color: #10B981;
+      font-size: 12px;
+    }
+
+    .ride-card {
+      background: #181818;
+      border: 1px solid #242424;
+      border-radius: 18px;
+      padding: 16px;
+      margin-bottom: 14px;
+      transition: .3s;
+    }
+
+    .ride-card:hover {
+      border-color: #10B981;
+      transform: translateY(-3px);
+    }
+
+    .ride-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .ride-top h3 {
+      font-size: 15px;
+    }
+
+    .price {
+      color: #10B981;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    .driver {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .driver-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #10B981;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    .driver-info h4 {
+      font-size: 14px;
+      margin-bottom: 3px;
+    }
+
+    .driver-info p {
+      color: #bdbdbd;
+      font-size: 12px;
+    }
+
+    .ride-details {
+      display: flex;
+      justify-content: space-between;
+      color: #9ca3af;
+      font-size: 12px;
+      margin-bottom: 14px;
+    }
+
+    .ride-btn {
+      width: 100%;
+      padding: 12px;
+      border-radius: 12px;
+      border: none;
+      background: #10B981;
+      color: white;
+      font-weight: bold;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    /* ======================
+       NAVBAR
+    ====================== */
+
+    .bottom-nav {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      height: 68px;
+      background: #121212;
+      border-top: 1px solid #222;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+    }
+
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      color: #8a8a8a;
+      font-size: 11px;
+    }
+
+    .nav-item i {
+      font-size: 18px;
+    }
+
+    .active {
+      color: #10B981 !important;
+    }
+
+    /* ======================
+       MOBILE
+    ====================== */
+
+    @media(max-width: 400px) {
+
+      body {
+        padding: 0;
+      }
+
+      .phone {
+        max-width: 100%;
+        width: 100%;
+        height: 100vh;
+        border-radius: 0;
+        border: none;
+      }
+
+      .map {
+        height: 160px;
+      }
+
+      .route {
+        left: 50%;
+        transform: translateX(-50%);
+      }
+
+      .car {
+        left: 50%;
+        transform: translateX(-50%);
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="phone">
+
+    <!-- HEADER -->
+
+    <div class="top">
+
+      <div class="top-bar">
+
+        <div class="avatar">
+          <i class="fa-solid fa-user"></i>
+        </div>
+
+        <div class="notification">
+          <i class="fa-solid fa-bell"></i>
+        </div>
+
+      </div>
+
+      <h1>
+        Encontre sua carona
+      </h1>
+
+      <p>
+        Viagens rápidas, seguras e econômicas perto de você.
+      </p>
+
+    </div>
+
+    <!-- MAP -->
+
+    <div class="map">
+
+      <div class="route"></div>
+
+      <div class="pin pin1"></div>
+
+      <div class="pin pin2"></div>
+
+      <div class="car">
+        🚗
+      </div>
+
+    </div>
+
+    <!-- CONTENT -->
+
+    <div class="content">
+
+      <div class="search-box">
+
+        <div class="input-group">
+          <label>Origem</label>
+          <input class="input" type="text" placeholder="Digite sua origem">
+        </div>
+
+        <div class="input-group">
+          <label>Destino</label>
+          <input class="input" type="text" placeholder="Digite seu destino">
+        </div>
+
+        <!-- FILTERS -->
+
+        <div class="filters">
+
+          <div class="filter active">
+            Todas
+          </div>
+
+          <div class="filter">
+            Gratuitas
+          </div>
+
+          <div class="filter">
+            Pagas
+          </div>
+
+        </div>
+
+        <button class="btn">
+          Buscar caronas
+        </button>
+
+      </div>
+
+      <!-- RIDES -->
+
+      <div class="rides">
+
+        <div class="rides-title">
+
+          <h2>
+            Caronas disponíveis
+          </h2>
+
+          <span>
+            12 próximas
+          </span>
+
+        </div>
+
+        <!-- CARD 1 -->
+
+        <div class="ride-card">
+
+          <div class="ride-top">
+
+            <h3>
+              Centro → Universidade
+            </h3>
+
+            <div class="price">
+              R$ 8
+            </div>
+
+          </div>
+
+          <div class="driver">
+
+            <div class="driver-avatar">
+              C
+            </div>
+
+            <div class="driver-info">
+
+              <h4>
+                Carlos Henrique
+              </h4>
+
+              <p>
+                ⭐ 4.9 • 3 vagas
+              </p>
+
+            </div>
+
+          </div>
+
+          <div class="ride-details">
+
+            <span>
+              ⏰ 08:30
+            </span>
+
+            <span>
+              📍 5 min perto
+            </span>
+
+          </div>
+
+          <button class="ride-btn">
+            Reservar vaga
+          </button>
+
+        </div>
+
+        <!-- CARD 2 -->
+
+        <div class="ride-card">
+
+          <div class="ride-top">
+
+            <h3>
+              Shopping → Bairro Sul
+            </h3>
+
+            <div class="price">
+              Grátis
+            </div>
+
+          </div>
+
+          <div class="driver">
+
+            <div class="driver-avatar">
+              J
+            </div>
+
+            <div class="driver-info">
+
+              <h4>
+                Juliana Souza
+              </h4>
+
+              <p>
+                ⭐ 5.0 • 2 vagas
+              </p>
+
+            </div>
+
+          </div>
+
+          <div class="ride-details">
+
+            <span>
+              ⏰ 09:10
+            </span>
+
+            <span>
+              📍 3 min perto
+            </span>
+
+          </div>
+
+          <button class="ride-btn">
+            Entrar na carona
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- NAVBAR -->
+
+    <div class="bottom-nav">
+
+      <div class="nav-item active">
+        <i class="fa-solid fa-house"></i>
+        <span>Início</span>
+      </div>
+
+      <div class="nav-item">
+        <i class="fa-solid fa-location-dot"></i>
+        <span>Rotas</span>
+      </div>
+
+      <div class="nav-item">
+        <i class="fa-solid fa-message"></i>
+        <span>Chat</span>
+      </div>
+
+      <div class="nav-item">
+        <i class="fa-solid fa-user"></i>
+        <span>Perfil</span>
+      </div>
+
+    </div>
+
+  </div>
+
+</body>
+
+</html>
